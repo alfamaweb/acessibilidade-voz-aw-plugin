@@ -10,6 +10,35 @@
     const FIM_DE_PALAVRA = /[\s,;:.!?]/;
     const FIM_DE_FRASE = /[.!?;:](?:\s|$)/g;
 
+    /**
+     * Desempate entre vozes da mesma tecnologia, da que soa mais natural para
+     * a menos. Sem isto as dezesseis neurais pt-BR empatam na pontuação e
+     * vence simplesmente a primeira que o navegador listar — ou seja, a
+     * escolha fica ao acaso.
+     *
+     * Isto é dado, não regra: um retrato da nomenclatura dos fornecedores em
+     * outubro de 2026, feito de ouvido. Envelhece, e envelhecer aqui não
+     * quebra nada: uma voz que saia da lista volta a valer pela tecnologia.
+     */
+    const PREFERIDAS = {
+        'pt-br': ['thalita', 'brenda', 'francisca', 'giovanna', 'leila',
+            'yara', 'leticia', 'manuela', 'elza', 'antônio', 'antonio',
+            'fabio', 'humberto', 'valerio'],
+        'pt-pt': ['raquel', 'fernanda', 'duarte'],
+        'en-us': ['ava', 'aria', 'jenny', 'andrew', 'guy'],
+        'en-gb': ['sonia', 'libby', 'ryan'],
+        'es-es': ['elvira', 'ximena', 'álvaro', 'alvaro']
+    };
+
+    /** Bônus de 1 a N, menor que o salto de tecnologia: só desempata. */
+    function bonusDeNome(nome, idioma) {
+        const ordem = PREFERIDAS[idioma];
+        if (!ordem) return 0;
+        const posicao = ordem.findIndex(parte => nome.indexOf(parte) !== -1);
+
+        return posicao === -1 ? 0 : ordem.length - posicao;
+    }
+
     function normalizarTag(valor) {
         return String(valor || '').toLowerCase().replace(SEPARADOR, '-');
     }
@@ -26,8 +55,6 @@
      *
      * Os marcadores de nome são um retrato da nomenclatura dos fornecedores,
      * não um critério estável: a API não expõe nenhum campo de qualidade.
-     * Por isso voice.default, que é a voz que o próprio sistema do usuário
-     * declara, pesa acima deles.
      */
     function escolherVoz(vozes, idioma) {
         const alvo = normalizarTag(idioma);
@@ -46,9 +73,6 @@
             else if (codigo.split('-')[0] === base) nota = 50;
             else continue;
 
-            // Preferência declarada pelo usuário no sistema vence o palpite.
-            if (voz.default) nota += 40;
-
             // Marcadores de tecnologia, na ordem em que soam melhor.
             if (NEURAL.test(nome)) nota += 30;
             else if (nome.indexOf('google') !== -1) nota += 25;
@@ -58,8 +82,14 @@
             // costuma soar melhor. "multil" cobre multilingual e multilíngue.
             if (MULTILINGUE.test(nome)) nota -= 10;
 
-            // Empate: a local começa a falar sem depender de rede.
+            if (codigo === alvo) nota += bonusDeNome(nome, alvo);
+
+            // Desempates. voice.default não é escolha do usuário: no Windows
+            // ele aponta para a voz SAPI legada, justamente a que soa pior.
+            // Por isso vale pouco, e nunca o bastante para desbancar uma
+            // neural.
             if (voz.localService) nota += 5;
+            if (voz.default) nota += 2;
 
             if (nota > melhorNota) {
                 melhorNota = nota;
