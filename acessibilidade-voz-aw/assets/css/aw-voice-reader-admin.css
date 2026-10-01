@@ -1,0 +1,18 @@
+.aw-voice-reader-admin {
+    max-width: 760px;
+}
+.aw-voice-reader-admin .aw-voice-reader-radio {
+    display: inline-block;
+    margin: 0 24px 8px 0;
+}
+.aw-voice-reader-admin .form-table td {
+    vertical-align: top;
+}
+.aw-voice-reader-admin .form-table td .description {
+    max-width: 44em;
+}
+/* O color picker do WordPress injeta um wrapper; a descrição precisa ficar
+   abaixo dele, não ao lado. */
+.aw-voice-reader-admin .wp-picker-container + .description {
+    margin-top: 8px;
+}

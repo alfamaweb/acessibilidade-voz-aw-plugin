@@ -1,0 +1,182 @@
+#aw-voice-reader-root {
+    --aw-voice-reader-color: #334155;
+    --aw-voice-reader-foreground: #fff;
+    --aw-voice-reader-size: 56px;
+    --aw-voice-reader-offset-x: 16px;
+    --aw-voice-reader-offset-y: 88px;
+    position: fixed;
+    z-index: 99990;
+    width: max-content;
+    max-width: calc(100vw - 32px);
+    color: #172033;
+    font: 400 16px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif;
+    text-align: left;
+    direction: ltr;
+    isolation: isolate;
+}
+#aw-voice-reader-root,
+#aw-voice-reader-root * {
+    box-sizing: border-box;
+}
+#aw-voice-reader-root[hidden],
+#aw-voice-reader-root [hidden] {
+    display: none !important;
+}
+#aw-voice-reader-root.aw-voice-reader-bottom-right,
+#aw-voice-reader-root.aw-voice-reader-bottom-left {
+    bottom: calc(var(--aw-voice-reader-offset-y) + env(safe-area-inset-bottom, 0px));
+}
+#aw-voice-reader-root.aw-voice-reader-middle-right,
+#aw-voice-reader-root.aw-voice-reader-middle-left {
+    top: 50%;
+    transform: translateY(-50%);
+}
+#aw-voice-reader-root.aw-voice-reader-bottom-right,
+#aw-voice-reader-root.aw-voice-reader-middle-right {
+    right: max(var(--aw-voice-reader-offset-x), env(safe-area-inset-right, 0px));
+    left: auto;
+}
+#aw-voice-reader-root.aw-voice-reader-bottom-left,
+#aw-voice-reader-root.aw-voice-reader-middle-left {
+    left: max(var(--aw-voice-reader-offset-x), env(safe-area-inset-left, 0px));
+    right: auto;
+}
+#aw-voice-reader-root button {
+    appearance: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 44px;
+    margin: 0;
+    padding: 10px 14px;
+    border: 1px solid currentColor;
+    border-radius: 10px;
+    background: var(--aw-voice-reader-color);
+    color: var(--aw-voice-reader-foreground);
+    font: inherit;
+    font-weight: 600;
+    line-height: 1.4;
+    text-transform: none;
+    letter-spacing: normal;
+    text-decoration: none;
+    cursor: pointer;
+    box-shadow: none;
+}
+#aw-voice-reader-root button:not(:disabled):hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+/*
+ * O anel de foco fica por dentro do botão, na mesma cor do ícone. Essa cor
+ * é calculada para 4.5:1 contra o fundo do botão, então o contraste do
+ * indicador está garantido sem depender do fundo da página — um anel
+ * pintado por fora dependeria, e sumiria em página da mesma cor.
+ * Sem box-shadow aqui: ela sobrescreveria a sombra do botão flutuante.
+ */
+#aw-voice-reader-root button:focus {
+    outline: 3px solid var(--aw-voice-reader-foreground);
+    outline-offset: -5px;
+}
+#aw-voice-reader-root button:disabled {
+    background: #e2e8f0;
+    color: #475569;
+    cursor: default;
+}
+#aw-voice-reader-root #aw-voice-reader-toggle {
+    width: var(--aw-voice-reader-size);
+    height: var(--aw-voice-reader-size);
+    min-height: 0;
+    padding: 0;
+    border-radius: 50%;
+    box-shadow: 0 4px 18px rgb(0 0 0 / 25%);
+}
+#aw-voice-reader-root #aw-voice-reader-toggle svg {
+    width: 45%;
+    height: 45%;
+    display: block;
+}
+#aw-voice-reader-root #aw-voice-reader-panel {
+    position: absolute;
+    width: 290px;
+    max-width: calc(100vw - 32px);
+    max-height: calc(100dvh - 180px);
+    overflow-y: auto;
+    padding: 18px;
+    border: 1px solid #64748b;
+    border-radius: 14px;
+    background: #fff;
+    color: #172033;
+    box-shadow: 0 8px 28px rgb(0 0 0 / 18%);
+}
+#aw-voice-reader-root.aw-voice-reader-bottom-right #aw-voice-reader-panel,
+#aw-voice-reader-root.aw-voice-reader-bottom-left #aw-voice-reader-panel {
+    bottom: calc(100% + 12px);
+    top: auto;
+}
+#aw-voice-reader-root.aw-voice-reader-bottom-right #aw-voice-reader-panel {
+    right: 0;
+}
+#aw-voice-reader-root.aw-voice-reader-bottom-left #aw-voice-reader-panel {
+    left: 0;
+}
+#aw-voice-reader-root.aw-voice-reader-middle-right #aw-voice-reader-panel,
+#aw-voice-reader-root.aw-voice-reader-middle-left #aw-voice-reader-panel {
+    top: 50%;
+    bottom: auto;
+    transform: translateY(-50%);
+}
+#aw-voice-reader-root.aw-voice-reader-middle-right #aw-voice-reader-panel {
+    right: calc(100% + 12px);
+}
+#aw-voice-reader-root.aw-voice-reader-middle-left #aw-voice-reader-panel {
+    left: calc(100% + 12px);
+}
+#aw-voice-reader-root #aw-voice-reader-title {
+    display: block;
+    margin-bottom: 12px;
+    font: inherit;
+    font-weight: 700;
+}
+#aw-voice-reader-root #aw-voice-reader-controls {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+}
+#aw-voice-reader-root #aw-voice-reader-status {
+    margin: 12px 0 0;
+    color: #334155;
+    font: inherit;
+    font-size: 14px;
+}
+@media (max-height: 400px) {
+    #aw-voice-reader-root.aw-voice-reader-bottom-right,
+    #aw-voice-reader-root.aw-voice-reader-bottom-left {
+        bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+    }
+    #aw-voice-reader-root #aw-voice-reader-panel {
+        max-height: calc(100dvh - 90px);
+    }
+}
+@media print {
+    #aw-voice-reader-root {
+        display: none !important;
+    }
+}
+
+/*
+ * Destaque da leitura. O pseudo-elemento ::highlight() aceita somente
+ * color, background-color, text-decoration, text-shadow e
+ * -webkit-text-stroke: negrito, borda e padding são ignorados pela
+ * especificação. Onde a API não existe, nada disto se aplica e a leitura
+ * segue sem destaque.
+ */
+::highlight(aw-voice-reader-frase) {
+    background-color: var(--aw-voice-reader-highlight-soft, rgb(255 224 102 / 30%));
+}
+::highlight(aw-voice-reader-palavra) {
+    background-color: var(--aw-voice-reader-highlight, #ffe066);
+    color: var(--aw-voice-reader-highlight-fg, #000);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
