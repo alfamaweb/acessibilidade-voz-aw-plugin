@@ -110,6 +110,34 @@ Os prefixos `aw-voice-reader` nos assets, nos IDs de CSS e na chave da option
 são anteriores ao rename e foram mantidos: trocar a chave descartaria as
 configurações já salvas.
 
+## Compatibilidade
+
+O plugin degrada em etapas em vez de quebrar. A leitura funciona em todo
+navegador moderno; o que varia é o destaque.
+
+| Camada | Depende de | Onde funciona |
+|---|---|---|
+| Painel de configurações | só PHP | qualquer navegador |
+| O botão aparecer | JavaScript ES2015 | qualquer navegador desde ~2017 |
+| **A leitura** | `speechSynthesis` | **todos os modernos** |
+| O destaque existir | `CSS.highlights` | Chrome/Edge 105+, Safari 17.2+, Firefox recente |
+| Destaque palavra a palavra | evento `onboundary` | desktop sim, Android quase nunca |
+| Pausar e continuar | `pause()`/`resume()` | instável no Chrome Android |
+
+No Chrome do Android a leitura e o destaque funcionam, mas o destaque marca
+o bloco em vez da palavra, porque o motor do Google raramente dispara o
+`onboundary`. Sem `CSS.highlights` a leitura roda sem pintura, sem mensagem
+de erro. Sem `speechSynthesis` os controles aparecem desabilitados com uma
+mensagem explicando.
+
+O CSS usa `100dvh` e `env(safe-area-inset-*)`; onde não houver suporte, o
+painel fica sem teto de altura. O JavaScript não usa `?.` nem `??`, para não
+exigir nada além de ES2015 do visitante.
+
+Esta tabela vem da documentação das APIs, não de teste em aparelho. Os
+navegadores que importam são os que o público do site realmente usa — veja
+o Analytics antes de confiar em tabela de compatibilidade.
+
 ## Limitações conhecidas
 
 Nenhuma impede ouvir a página; todas degradam sozinhas.
