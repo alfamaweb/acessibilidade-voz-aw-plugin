@@ -10,7 +10,7 @@ não substitui um leitor de tela.
 
 | | |
 |---|---|
-| Versão | 1.3.0 |
+| Versão | 1.4.0 |
 | Requer | WordPress 6.0+, PHP 7.4+ |
 | Licença | GPL-2.0-or-later |
 
@@ -33,19 +33,38 @@ O tema precisa executar `wp_head()` e `wp_footer()`.
 
 **Configurações → Acessibilidade Voz AW**
 
-| Campo | Valores | Padrão |
-|---|---|---|
-| Idioma da leitura | automático ou fixo | automático |
-| Posição | inferior/meio × direita/esquerda | inferior direita |
-| Distância lateral | 0 a 200 px | 16 |
-| Distância vertical | 0 a 400 px | 88 |
-| Tamanho do botão | 48, 56 ou 64 px | 56 |
-| Cor do botão | hexadecimal | `#334155` |
-| Cor do destaque | hexadecimal | `#ffe066` |
+A tela tem uma pré-visualização ao lado do formulário, que usa o markup e o
+CSS reais do site e atualiza enquanto se edita, antes de salvar.
 
-As cores de texto sobre o botão e sobre o destaque saem da luminância
-relativa da WCAG, então qualquer cor escolhida mantém contraste acima de
-4.5:1 — não dá para configurar algo ilegível.
+| Seção | Campo | Valores | Padrão |
+|---|---|---|---|
+| Leitura | Idioma da leitura | automático ou fixo | automático |
+| | Cor do destaque | hexadecimal | `#ffe066` |
+| Posição | Posição | inferior/meio × direita/esquerda | inferior direita |
+| | Distância lateral | 0 a 200 px | 16 |
+| | Distância vertical | 0 a 400 px | 88 |
+| | Camada (z-index) | 1 a 2147483647 | 99990 |
+| Botão flutuante | Formato | círculo, arredondado, quadrado | círculo |
+| | Tamanho | 44 a 96 px | 56 |
+| | Tamanho do ícone | 30 a 70 % do botão | 45 |
+| | Cor de fundo | hexadecimal | `#334155` |
+| | Cor do ícone | hexadecimal ou vazio | automático |
+| | Sombra | sim/não | sim |
+| | Aumentar ao passar o mouse | sim/não | sim |
+| Painel | Fundo, texto, borda | hexadecimal | `#ffffff`, `#172033`, `#64748b` |
+| | Arredondamento | 0 a 32 px | 14 |
+| | Fundo dos botões | hexadecimal ou vazio | cor do botão flutuante |
+| | Texto dos botões | hexadecimal ou vazio | automático |
+
+Os padrões reproduzem a aparência da 1.3. O tamanho mínimo de 44 px é o
+alvo de toque da WCAG 2.5.5.
+
+**Contraste.** Cor vazia (botão **Limpar** do seletor) significa automático:
+preto ou branco, pela luminância relativa da WCAG, sempre acima de 4.5:1. O
+texto sobre o destaque é sempre automático. Uma cor manual pode ficar
+ilegível; o painel mostra a razão de contraste ao lado de cada par e avisa
+abaixo de 3:1 para o ícone (WCAG 1.4.11) e 4.5:1 para texto — avisa, mas
+não impede de salvar. Os botões desabilitados do painel têm cor fixa.
 
 Em idioma automático o plugin segue **Configurações → Geral**. Um site
 brasileiro configurado como inglês faz o navegador ler português com voz
@@ -162,12 +181,20 @@ Nenhuma impede ouvir a página; todas degradam sozinhas.
 - [ ] Confirmar que menu, rodapé, widgets e modais não são lidos.
 - [ ] Testar página sem `main`, `.entry-content` nem `article`.
 - [ ] Abrir o painel por teclado, fechar com Escape, conferir o anel de foco.
-- [ ] Salvar os sete campos e conferir o efeito no site.
+- [ ] Salvar todos os campos e conferir que o site fica igual à prévia.
+- [ ] Desmarcar sombra e efeito do mouse, salvar e confirmar que continuam desmarcados.
 - [ ] Conferir a posição com os outros botões flutuantes ativos.
 - [ ] Testar em Android: destaque em bloco, pausar e continuar.
 - [ ] Testar nos navegadores que o público do site usa.
 
 ## Changelog
+
+**1.4.0** — Estilo e cores configuráveis: formato, tamanho livre e tamanho do
+ícone do botão, cor do ícone, sombra, efeito ao passar o mouse, z-index, e
+cores e cantos do painel e dos botões de controle. Pré-visualização ao vivo
+no painel com aviso de contraste. Instalações anteriores mantêm a aparência,
+exceto pelo novo efeito ao passar o mouse, que respeita
+`prefers-reduced-motion`.
 
 **1.3.0** — Renomeado para Acessibilidade Voz AW, preservando a chave da
 option. Corrige o primeiro bloco sair sem destaque no Android e o mapa não

@@ -1,5 +1,15 @@
 .aw-voice-reader-admin {
-    max-width: 760px;
+    max-width: 1240px;
+}
+.aw-voice-reader-layout {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 32px;
+}
+.aw-voice-reader-form {
+    flex: 1 1 560px;
+    max-width: 720px;
 }
 .aw-voice-reader-admin .aw-voice-reader-radio {
     display: inline-block;
@@ -13,6 +23,84 @@
 }
 /* O color picker do WordPress injeta um wrapper; a descrição precisa ficar
    abaixo dele, não ao lado. */
-.aw-voice-reader-admin .wp-picker-container + .description {
+.aw-voice-reader-admin .wp-picker-container + .description,
+.aw-voice-reader-admin .wp-picker-container + .aw-voice-reader-contraste {
     margin-top: 8px;
+}
+.aw-voice-reader-admin h2 {
+    margin-top: 28px;
+    padding-top: 16px;
+    border-top: 1px solid #dcdcde;
+}
+.aw-voice-reader-form > h2:first-of-type {
+    margin-top: 8px;
+    padding-top: 0;
+    border-top: 0;
+}
+
+.aw-voice-reader-contraste:empty {
+    display: none;
+}
+.aw-voice-reader-contraste {
+    margin: 6px 0 0;
+}
+/* O aviso diz em texto o que está errado; a cor só reforça. */
+.aw-voice-reader-contraste.is-baixo {
+    color: #b32d2e;
+    font-weight: 600;
+}
+
+/*
+ * Prévia. Fica fixa ao rolar enquanto houver espaço ao lado do formulário;
+ * em telas estreitas desce para baixo dele.
+ */
+.aw-voice-reader-preview {
+    flex: 0 1 460px;
+    min-width: 0;
+    position: sticky;
+    top: 48px;
+}
+.aw-voice-reader-preview h2 {
+    margin-top: 8px;
+    padding-top: 0;
+    border-top: 0;
+}
+.aw-voice-reader-stage {
+    position: relative;
+    height: 460px;
+    overflow: hidden;
+    border: 1px solid #c3c4c7;
+    border-radius: 4px;
+    background-color: #f6f7f7;
+    background-image:
+        linear-gradient(#e7e8e9 1px, transparent 1px),
+        linear-gradient(90deg, #e7e8e9 1px, transparent 1px);
+    background-size: 24px 24px;
+}
+/* O widget real é fixed; aqui ele fica preso ao quadro. */
+.aw-voice-reader-stage #aw-voice-reader-root {
+    position: absolute;
+}
+.aw-voice-reader-sample {
+    margin: 16px;
+    max-width: 380px;
+    color: #1d2327;
+    font-size: 15px;
+    line-height: 1.6;
+}
+.aw-voice-reader-sample-frase {
+    background-color: var(--aw-voice-reader-highlight-soft);
+}
+.aw-voice-reader-sample-palavra {
+    background-color: var(--aw-voice-reader-highlight);
+    color: var(--aw-voice-reader-highlight-fg);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+@media (max-width: 1100px) {
+    .aw-voice-reader-preview {
+        position: static;
+        flex-basis: 100%;
+        max-width: 560px;
+    }
 }

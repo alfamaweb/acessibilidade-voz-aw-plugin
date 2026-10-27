@@ -23,13 +23,21 @@ final class Renderer {
         }
         self::$rendered = true;
 
-        $options = Settings::all();
+        self::markup(Settings::all(), false);
+    }
+
+    /**
+     * Também usado pela pré-visualização do painel, que mostra o mesmo
+     * markup já visível e com o painel aberto. Assim a prévia usa o CSS
+     * real do site e não pode divergir dele.
+     */
+    public static function markup($options, $preview) {
         ?>
         <div
             id="aw-voice-reader-root"
             class="<?php echo esc_attr('aw-voice-reader-' . $options['position']); ?>"
             lang="<?php echo esc_attr(Plugin::language()); ?>"
-            hidden
+            <?php echo $preview ? '' : 'hidden'; ?>
         >
             <?php
             // Sem texto visível, o aria-label passa a ser o nome canônico: a
@@ -41,7 +49,7 @@ final class Renderer {
                 id="aw-voice-reader-toggle"
                 type="button"
                 aria-label="Ouvir esta página em voz alta"
-                aria-expanded="false"
+                aria-expanded="<?php echo $preview ? 'true' : 'false'; ?>"
                 aria-controls="aw-voice-reader-panel"
             >
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -56,7 +64,7 @@ final class Renderer {
             <section
                 id="aw-voice-reader-panel"
                 aria-label="Leitor de voz"
-                hidden
+                <?php echo $preview ? '' : 'hidden'; ?>
             >
                 <strong id="aw-voice-reader-title">Leitura da página</strong>
 
